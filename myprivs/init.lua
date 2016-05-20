@@ -53,7 +53,8 @@ local function setprivs(player,param)
 	end
 	
 	local playername=args[1]
-
+	local targetplayer = minetest.get_player_by_name(playername)
+	
 	minetest.set_player_privs(playername, {}) -- Reset all privileges to nothing
 	local privs=minetest.get_player_privs(param)
 	
@@ -64,13 +65,13 @@ local function setprivs(player,param)
 		local prison=minetest.setting_get("myprivs.prison")
 		local spawn=minetest.setting_get("myprivs.spawn")
 		local prisonminutes=minetest.setting_get("myprivs.prisonminutes")
-		playername:setpos(prison)
-		minetest.chat_send_player(playername, "You have been sent to prison. Your punishment will last " .. prisonminutes .. " minutes at which time you will be given the chance to re-enter society.")
+		targetplayer:setpos(prison)
+		minetest.chat_send_player(targetplayer, "You have been sent to prison. Your punishment will last " .. prisonminutes .. " minutes at which time you will be given the chance to re-enter society.")
 		minetest.after(prisonminutes*60,
 			function() 
-				playername:setpos(spawn)
+				targetplayer:setpos(spawn)
 				args[2]="restricted"
-				minetest.chat_send_player(playername, "You are now allowed back into society. Do not fail us. Follow the rules.")
+				minetest.chat_send_player(targetplayer, "You are now allowed back into society. Do not fail us. Follow the rules.")
 			end
 		)
 	end
