@@ -48,7 +48,7 @@ local function setprivs(player,param)
 		
 		-- Normal
 		if levelnum >= 10 then
-			privs.nointeract=false
+			privs.nointeract=nil
 			privs.interact=true
 			privs.home=true
 			privs.fast=true
