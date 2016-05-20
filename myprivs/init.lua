@@ -11,58 +11,60 @@ minetest.register_chatcommand("myprivs_commands", {
 })
 
 local function setprivs(param,levelname)
-	minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
-	-- Convert level names to numeric values for priv hierarchy
-
-	if levelname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
-
-	if levelnum == 0 then return end
-	-- These are the base levels and should be left as is to establish the priv hierarchy
-	-- In order to remove a priv from a level, do so within the chatcommand() after the call to setpriv()
-	-- I'm counting in 5's so we can easily add other levels in between
-	if levelnum >= 5 then
-		-- Restricted
-		privs.shout=true
-		privs.nointeract=true
-		
-		-- Normal
-		if levelnum >= 10 then
-			privs.nointeract=false
-			privs.interact=true
-			privs.home=true
-			privs.fast=true
+	if minetest.get_player_by_name(param) then
+		minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
+		-- Convert level names to numeric values for priv hierarchy
+	
+		if levelname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
+	
+		if levelnum == 0 then return end
+		-- These are the base levels and should be left as is to establish the priv hierarchy
+		-- In order to remove a priv from a level, do so within the chatcommand() after the call to setpriv()
+		-- I'm counting in 5's so we can easily add other levels in between
+		if levelnum >= 5 then
+			-- Restricted
+			privs.shout=true
+			privs.nointeract=true
+			
+			-- Normal
+			if levelnum >= 10 then
+				privs.nointeract=false
+				privs.interact=true
+				privs.home=true
+				privs.fast=true
+			end
+			
+			-- Helper
+			if levelnum >= 15 then
+				privs.fly=true
+				privs.noclip=true
+			end
+			
+			-- Moderator
+			if levelnum >= 20 then
+				privs.myprivs_levels=true
+				privs.teleport=true
+				privs.tp_admin=true
+				privs.basic_privs=true
+				privs.kick=true
+			end
+			
+			-- Admin
+			if levelnum >= 25 then
+				privs.bring=true
+				privs.ban=true
+				privs.areas=true
+			end
+			
+			-- Super Admin
+			if levelnum >= 50 then
+				privs.give=true
+				privs.privs=true
+				privs.tps_magicchests=true
+			end
+			
+			minetest.set_player_privs(param,privs)
 		end
-		
-		-- Helper
-		if levelnum >= 15 then
-			privs.fly=true
-			privs.noclip=true
-		end
-		
-		-- Moderator
-		if levelnum >= 20 then
-			privs.myprivs_levels=true
-			privs.teleport=true
-			privs.tp_admin=true
-			privs.basic_privs=true
-			privs.kick=true
-		end
-		
-		-- Admin
-		if levelnum >= 25 then
-			privs.bring=true
-			privs.ban=true
-			privs.areas=true
-		end
-		
-		-- Super Admin
-		if levelnum >= 50 then
-			privs.give=true
-			privs.privs=true
-			privs.tps_magicchests=true
-		end
-		
-		minetest.set_player_privs(param,privs)
 	end
 end
 
