@@ -2,6 +2,8 @@
 minetest.register_privilege("myprivs_levels", "Lets person set level of privlege people have")
 minetest.register_privilege("myprivs_levels_super", "Lets person set level of privlege people have plus the super level")
 
+local myprivs={}
+
 function myprivs.save()
         local file = io.open(minetest.get_worldpath().."/myprivs.txt", "w")
         if file then
