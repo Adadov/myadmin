@@ -23,6 +23,7 @@ minetest.register_chatcommand("super_admin", {
 			privs.home=true
 			privs.give=true
 			privs.teleport=true
+			privs.tp_admin=true
 			privs.bring=true
 			privs.fast=true
 			privs.fly=true
@@ -53,6 +54,7 @@ minetest.register_chatcommand("admin", {
 			privs.interact=true
 			privs.home=true
 			privs.teleport=true
+			privs.tp_admin=true
 			privs.bring=true
 			privs.fast=true
 			privs.fly=true
@@ -82,6 +84,7 @@ minetest.register_chatcommand("mod", {
 			privs.interact=true
 			privs.home=true
 			privs.teleport=true
+			privs.tp_admin=true
 			privs.fast=true
 			privs.fly=true
 			privs.basic_privs=true
