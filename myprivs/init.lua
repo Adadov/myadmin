@@ -68,7 +68,7 @@ local function setprivs(player,param)
 		minetest.after(3600,
 			function() 
 				param:setpos(spawn)
-				args[2]="interact"
+				args[2]="restricted"
 			end
 		)
 	end
