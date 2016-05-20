@@ -14,7 +14,7 @@ local function setprivs(param,levelname)
 	minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
 	-- Convert level names to numeric values for priv hierarchy
 
-	if levelname=="admin" then levelnum=25 end -- need to confirm the user requesting this is at least this level
+	if levelname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
 
 	if levelnum == 0 then return end
 	-- These are the base levels and should be left as is to establish the priv hierarchy
