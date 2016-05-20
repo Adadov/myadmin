@@ -10,7 +10,7 @@ minetest.register_chatcommand("myprivs_commands", {
 	end,
 })
 
-local function setprivs(param,levelname)
+local function setprivs(name,param,levelname)
 	if minetest.get_player_by_name(param) then
 		local levelname=" restricted player" -- the lowest level
 		minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
