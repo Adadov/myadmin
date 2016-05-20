@@ -1,7 +1,7 @@
 
 minetest.register_privilege("myprivs_levels", "Lets person set level of privlege people have")
 minetest.register_privilege("myprivs_levels_super", "Lets person set level of privlege people have plus the super level")
-
+--[[
 local myprivs={}
 
 function myprivs.save()
@@ -34,7 +34,7 @@ function myprivs.assertPlayer(playern,playerx,myprivs_level)
         myprivs.tbv(myprivs.players[playern], "setby", playerx)
         myprivs.tbv(myprivs.players[playern], "myprivs_level", myprivs_level)
 end
-
+]]--
 local function setprivs(player,param)
 	local leveltitle=" restricted player" -- the lowest level
 	local levelnum=0
@@ -71,8 +71,8 @@ local function setprivs(player,param)
 	if args[2]=="admin" then levelnum=25 end
 	if args[2]=="super" then levelnum=50 end
 
-	myprivs.assertPlayer(playername,pname,levelnum)
-	myprivs.save()
+	--myprivs.assertPlayer(playername,pname,levelnum)
+	--myprivs.save()
 	
 	if levelnum == 0 then
 		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
