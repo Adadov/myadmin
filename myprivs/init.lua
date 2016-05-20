@@ -61,8 +61,16 @@ local function setprivs(player,param)
 	-- need to confirm the user requesting this is at least this level
 	if args[2]=="prison" then
 		levelnum=0
-		--teleport the player to prison for 1 hour and then teleport them to spawn with restricted access
-		return
+		prison = minetest.setting_get("myprivs.prison")
+		spawn = minetest.setting_get("myprivs.spawn")
+		param:setpos(prison)
+		minetest.chat_send_player(param, "You have been sent to prison. Your punishment will last 60 minutes at which time you will be given the chance to re-enter society.")
+		minetest.after(3600,
+			function() 
+				param:setpos(spawn)
+				args[2]="interact"
+			end
+		)
 	end
 	if args[2]=="restricted" then levelnum=5 end
 	if args[2]=="interact" then levelnum=10 end
