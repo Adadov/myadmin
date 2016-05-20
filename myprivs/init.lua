@@ -10,12 +10,13 @@ minetest.register_chatcommand("myprivs_commands", {
 	end,
 })
 
-local function setprivs(name,playername,levelshortname)
-	local levelname=" restricted player" -- the lowest level
+local function setprivs(player,playername,levelname)
+	local pname = minetest.get_player_by_name(player)
+	local leveltitle=" restricted player" -- the lowest level
 	minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
 	-- Convert level names to numeric values for priv hierarchy
 
-	if levelshortname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
+	if levelname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
 
 	if levelnum == 0 then return end
 	-- These are the base levels and should be left as is to establish the priv hierarchy
@@ -25,7 +26,7 @@ local function setprivs(name,playername,levelshortname)
 		-- Restricted
 		privs.shout=true
 		privs.nointeract=true
-		levelname=" restricted player with the ability to gain interact"
+		leveltitle=" restricted player with the ability to gain interact"
 		
 		-- Normal
 		if levelnum >= 10 then
@@ -33,14 +34,14 @@ local function setprivs(name,playername,levelshortname)
 			privs.interact=true
 			privs.home=true
 			privs.fast=true
-			levelname=" normal player"
+			leveltitle=" normal player"
 		end
 		
 		-- Helper
 		if levelnum >= 15 then
 			privs.fly=true
 			privs.noclip=true
-			levelname=" helper"
+			leveltitle=" helper"
 		end
 		
 		-- Moderator
@@ -50,7 +51,7 @@ local function setprivs(name,playername,levelshortname)
 			privs.tp_admin=true
 			privs.basic_privs=true
 			privs.kick=true
-			levelname=" moderator"
+			leveltitle=" moderator"
 		end
 		
 		-- Admin
@@ -58,7 +59,7 @@ local function setprivs(name,playername,levelshortname)
 			privs.bring=true
 			privs.ban=true
 			privs.areas=true
-			levelname="n admin"
+			leveltitle="n admin"
 		end
 		
 		-- Super Admin
@@ -66,17 +67,17 @@ local function setprivs(name,playername,levelshortname)
 			privs.give=true
 			privs.privs=true
 			privs.tps_magicchests=true
-			levelname=" super admin"
+			leveltitle=" super admin"
 		end
 		
-		minetest.set_player_privs(param,privs)
-		minetest.chat_send_player(name, param .. " is now a" .. levelname .. ".")
+		minetest.set_player_privs(targetplayer,privs)
+		minetest.chat_send_player(name, param .. " is now a" .. leveltitle .. ".")
 	end
 end
 
 minetest.register_chatcommand("userlevel", {
 	description = "Moderator/Administrator tool to control the privileges of players. Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>",
-	params = "<player> <prison|restrict|interact|helper|mod|admin|super>",
+	params = "<playername> <levelname>",
 	privs = {myprivs_levels=true},
 	func = setprivs
 })
