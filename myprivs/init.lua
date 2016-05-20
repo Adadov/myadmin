@@ -10,12 +10,26 @@ minetest.register_chatcommand("myprivs_commands", {
 	end,
 })
 
-local function setprivs(player,playername,levelname)
+local function setprivs(player,param)
 	local pname = minetest.get_player_by_name(player)
 	local leveltitle=" restricted player" -- the lowest level
 	minetest.set_player_privs(playername, {}) -- Reset all privileges to nothing
-	-- Convert level names to numeric values for priv hierarchy
 
+	if param == "" then
+		minetest.chat_send_player(player, "Usage: ")
+		return false
+	end
+
+	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
+	if #args < 2 then
+		minetest.chat_send_player(player, "Usage: ")
+		return false
+	end
+	
+	local playername=args[1]
+	local levelname=args[2]
+	
+	-- Convert level names to numeric values for priv hierarchy
 	if levelname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
 
 	if levelnum == 0 then return end
@@ -71,13 +85,13 @@ local function setprivs(player,playername,levelname)
 		end
 		
 		minetest.set_player_privs(playername,privs)
-		minetest.chat_send_player(name, playername .. " is now a" .. leveltitle .. ".")
+		minetest.chat_send_player(pname, playername .. " is now a" .. leveltitle .. ".")
 	end
 end
 
 minetest.register_chatcommand("userlevel", {
 	description = "Moderator/Administrator tool to control the privileges of players. Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>",
-	params = "<playername> <levelname>",
+	params = "<player> <prison|restrict|interact|helper|mod|admin|super>",
 	privs = {myprivs_levels=true},
 	func = setprivs
 })
