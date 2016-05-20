@@ -29,6 +29,7 @@ local function setprivs(player,param)
 	local playername=args[1]
 
 	minetest.set_player_privs(playername, {}) -- Reset all privileges to nothing
+	local privs=minetest.get_player_privs(param)
 	
 	-- Convert level names to numeric values for priv hierarchy
 	if args[2]=="admin" then -- need to confirm the user requesting this is at least this level
