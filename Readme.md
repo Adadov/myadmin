@@ -25,24 +25,26 @@ You can get a full list of the commands by using /chats
 This is a list of words that are banned on the server. These words can be editted in the settings.txt file.
 
 
-#Privs
+#User Level (*myprivs*)
 
-The privs part is a set  of privs for different levels of players. You can set the level with a chat command.
+The User Level (myprivs) mod is a set of configurable privs for different levels of players. You can set the level with a chat command.
 
-The levels are
+**Usage:** /userlevel <player> <level>
 
-Super Admin
-Admin
-Moderator
-Helper
-Normal Player
-Punish
-Unpunish
-Silence
-Ghost
+**Required Privs:** *myprivs_levels*
 
-If you want the available commands do /myadmin_commands
-Super admin is not in the list because it is reserved for above admin people but not all privs.
+The available level options are:
+- *super* - Super Admin
+- *admin* - Admin
+- *mod* - Moderator
+- *helper* - Helper
+- *interact* - Normal Player
+- *prison* - Prisoner
+
+Required minetest.conf options:
+- *myprivs.prison=<x,y,z>* - Where to place prisoners. Should be an impenetrable fortress.
+- *myprivs.prisontime=<hours>* - How many real-life hours to send a player to prison for.
+- *myprivs.spawn=<x,y,z>* - When prisoners are released, this is where should they spawn.
 
 
 #Spawn
