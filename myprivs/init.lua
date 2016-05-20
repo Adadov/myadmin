@@ -13,7 +13,6 @@ minetest.register_chatcommand("myprivs_commands", {
 local function setprivs(player,param)
 	local pname = minetest.get_player_by_name(player)
 	local leveltitle=" restricted player" -- the lowest level
-	minetest.set_player_privs(playername, {}) -- Reset all privileges to nothing
 
 	if param == "" then
 		minetest.chat_send_player(player, "Usage: ")
@@ -28,6 +27,8 @@ local function setprivs(player,param)
 	
 	local playername=args[1]
 	local levelname=args[2]
+
+	minetest.set_player_privs(playername, {}) -- Reset all privileges to nothing
 	
 	-- Convert level names to numeric values for priv hierarchy
 	if levelname=="admin" then local levelnum=25 end -- need to confirm the user requesting this is at least this level
