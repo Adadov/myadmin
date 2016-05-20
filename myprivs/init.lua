@@ -64,12 +64,13 @@ local function setprivs(player,param)
 		local prison=minetest.setting_get("myprivs.prison")
 		local spawn=minetest.setting_get("myprivs.spawn")
 		local prisonminutes=minetest.setting_get("myprivs.prisonminutes")
-		param:setpos(prison)
-		minetest.chat_send_player(param, "You have been sent to prison. Your punishment will last " .. prisonminutes .. " minutes at which time you will be given the chance to re-enter society.")
+		playername:setpos(prison)
+		minetest.chat_send_player(playername, "You have been sent to prison. Your punishment will last " .. prisonminutes .. " minutes at which time you will be given the chance to re-enter society.")
 		minetest.after(prisonminutes*60,
 			function() 
-				param:setpos(spawn)
+				playername:setpos(spawn)
 				args[2]="restricted"
+				minetest.chat_send_player(playername, "You are now allowed back into society. Do not fail us. Follow the rules.")
 			end
 		)
 	end
