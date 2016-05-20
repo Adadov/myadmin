@@ -61,8 +61,8 @@ local function setprivs(player,param)
 	-- need to confirm the user requesting this is at least this level
 	if args[2]=="prison" then
 		levelnum=0
-		prison = minetest.setting_get("myprivs.prison")
-		spawn = minetest.setting_get("myprivs.spawn")
+		local prison=minetest.setting_get("myprivs.prison")
+		local spawn=minetest.setting_get("myprivs.spawn")
 		param:setpos(prison)
 		minetest.chat_send_player(param, "You have been sent to prison. Your punishment will last 60 minutes at which time you will be given the chance to re-enter society.")
 		minetest.after(3600,
