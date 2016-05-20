@@ -10,7 +10,7 @@ minetest.register_chatcommand("myprivs_commands", {
 	end,
 })
 
-local function setprivs(name,param,levelname)
+local function setprivs(name,playername,levelname)
 	local levelname=" restricted player" -- the lowest level
 	minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
 	-- Convert level names to numeric values for priv hierarchy
@@ -75,8 +75,8 @@ local function setprivs(name,param,levelname)
 end
 
 minetest.register_chatcommand("userlevel", {
-	description = "Moderator/Administrator tool to control the privileges of players.",
-	params = "<player> <prison|restrict|interact|helper|mod|admin|super>",
+	description = "Moderator/Administrator tool to control the privileges of players. Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>",
+	params = "<playername> <levelname>",
 	privs = {myprivs_levels=true},
 	func = setprivs
 })
