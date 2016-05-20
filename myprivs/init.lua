@@ -70,7 +70,6 @@ minetest.register_chatcommand("userlevel", {
 })
 
 minetest.register_chatcommand("super_admin", {
-	local mylevel=50
 	params = "",
 	description = "Super Administrator",
 	privs={myprivs_levels_super=true},
@@ -103,7 +102,6 @@ minetest.register_chatcommand("super_admin", {
 end})
 
 minetest.register_chatcommand("admin", {
-	local mylevel=25
 	params = "",
 	description = "Administrator",
 	privs={myprivs_levels=true},
@@ -134,7 +132,6 @@ minetest.register_chatcommand("admin", {
 end})
 
 minetest.register_chatcommand("mod", {
-	local mylevel=20
 	params = "",
 	description = "Moderator",
 	privs={myprivs_levels=true},
@@ -159,7 +156,6 @@ minetest.register_chatcommand("mod", {
 end})
 
 minetest.register_chatcommand("helper", {
-	local mylevel=15
 	params = "",
 	description = "Helper",
 	privs={myprivs_levels=true},
@@ -181,7 +177,6 @@ minetest.register_chatcommand("helper", {
 end})
 
 minetest.register_chatcommand("norm", {
-	local mylevel=10
 	params = "",
 	description = "Normal Player",
 	privs={myprivs_levels=true},
@@ -201,7 +196,6 @@ minetest.register_chatcommand("norm", {
 end})
 
 minetest.register_chatcommand("unpunish", {
-	local mylevel=5
 	params = "",
 	description = "Unpunish Player",
 	privs={myprivs_levels=true},
