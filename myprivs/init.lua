@@ -39,7 +39,7 @@ local function setprivs(player,param)
 	local leveltitle=" restricted player" -- the lowest level
 	local levelnum=0
 	local pname = minetest.get_player_by_name(player)
-	local myprivs_level=myprivs.player(player)
+--	local myprivs_level=myprivs.player(player)
 	
 	if param == "" then
 		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
