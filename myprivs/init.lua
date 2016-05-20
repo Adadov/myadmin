@@ -10,7 +10,7 @@ minetest.register_chatcommand("myprivs_commands", {
 	end,
 })
 
-local function setprivs(param,level)
+local function setprivs(param,mylevel)
 	minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
 	if level == 0 then return end
 	-- These are the base levels and should be left as is to establish the priv hierarchy
@@ -70,7 +70,7 @@ minetest.register_chatcommand("userlevel", {
 })
 
 minetest.register_chatcommand("super_admin", {
-	local level=50
+	local mylevel=50
 	params = "",
 	description = "Super Administrator",
 	privs={myprivs_levels_super=true},
@@ -103,7 +103,7 @@ minetest.register_chatcommand("super_admin", {
 end})
 
 minetest.register_chatcommand("admin", {
-	local level=25
+	local mylevel=25
 	params = "",
 	description = "Administrator",
 	privs={myprivs_levels=true},
@@ -134,7 +134,7 @@ minetest.register_chatcommand("admin", {
 end})
 
 minetest.register_chatcommand("mod", {
-	local level=20
+	local mylevel=20
 	params = "",
 	description = "Moderator",
 	privs={myprivs_levels=true},
@@ -159,7 +159,7 @@ minetest.register_chatcommand("mod", {
 end})
 
 minetest.register_chatcommand("helper", {
-	local level=15
+	local mylevel=15
 	params = "",
 	description = "Helper",
 	privs={myprivs_levels=true},
@@ -181,7 +181,7 @@ minetest.register_chatcommand("helper", {
 end})
 
 minetest.register_chatcommand("norm", {
-	local level=10
+	local mylevel=10
 	params = "",
 	description = "Normal Player",
 	privs={myprivs_levels=true},
@@ -201,7 +201,7 @@ minetest.register_chatcommand("norm", {
 end})
 
 minetest.register_chatcommand("unpunish", {
-	local level=5
+	local mylevel=5
 	params = "",
 	description = "Unpunish Player",
 	privs={myprivs_levels=true},
