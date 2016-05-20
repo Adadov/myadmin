@@ -11,18 +11,17 @@ minetest.register_chatcommand("myprivs_commands", {
 })
 
 local function setprivs(player,param)
-	local pname = minetest.get_player_by_name(player)
 	local leveltitle=" restricted player" -- the lowest level
 	local levelnum=0
 	
 	if param == "" then
-		minetest.chat_send_player(player, "Usage: ")
+		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
 		return false
 	end
 
 	local args = param:split(" ") -- look into this. Can it crash if the player does not have two parameters?
 	if #args < 2 then
-		minetest.chat_send_player(player, "Usage: ")
+		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
 		return false
 	end
 	
@@ -32,11 +31,23 @@ local function setprivs(player,param)
 	local privs=minetest.get_player_privs(param)
 	
 	-- Convert level names to numeric values for priv hierarchy
-	if args[2]=="admin" then -- need to confirm the user requesting this is at least this level
-		levelnum=25
+	-- need to confirm the user requesting this is at least this level
+	if args[2]=="prison" then
+		levelnum=0
+		--teleport the player to prison for 1 hour and then teleport them to spawn with restricted access
+		return
 	end
+	if args[2]=="restricted" then levelnum=5 end
+	if args[2]=="interact" then levelnum=10 end
+	if args[2]=="helper" then levelnum=15 end
+	if args[2]=="mod" then levelnum=20 end
+	if args[2]=="admin" then levelnum=25 end
+	if args[2]=="super" then levelnum=50 end
 
-	if levelnum == 0 then return end
+	if levelnum == 0 then
+		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
+		return false
+	end
 	-- These are the base levels and should be left as is to establish the priv hierarchy
 	-- In order to remove a priv from a level, do so within the chatcommand() after the call to setpriv()
 	-- I'm counting in 5's so we can easily add other levels in between
@@ -89,7 +100,7 @@ local function setprivs(player,param)
 		end
 		
 		minetest.set_player_privs(playername,privs)
-		minetest.chat_send_player(pname, playername .. " is now a" .. leveltitle .. ".")
+		minetest.chat_send_player(player, playername .. " is now a" .. leveltitle .. ".")
 	end
 end
 
