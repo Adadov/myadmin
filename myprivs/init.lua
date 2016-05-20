@@ -2,17 +2,42 @@
 minetest.register_privilege("myprivs_levels", "Lets person set level of privlege people have")
 minetest.register_privilege("myprivs_levels_super", "Lets person set level of privlege people have plus the super level")
 
-minetest.register_chatcommand("myprivs_commands", {
-	privs = {myprivs_levels = true},
-	func = function(name, param)
-		minetest.chat_send_player(name,"Available commands - /admin, /mod, /helper, /norm, /punish, /unpunish, silence, /ghost")
-		return true
-	end,
-})
+function myprivs.save()
+        local file = io.open(minetest.get_worldpath().."/myprivs.txt", "w")
+        if file then
+                file:write(minetest.serialize(myprivs.players))
+                file:close()
+        end
+end
+
+function myprivs.load()
+        local file = io.open(minetest.get_worldpath().."/myprivs.txt", "r")
+        if file then
+                local table = minetest.deserialize(file:read("*all"))
+                if type(table) == "table" then
+                        return table
+                end
+        end
+        return {}
+end
+
+myprivs.players = myprivs.load()
+function myprivs.player(name)
+        return myprivs.players[name]
+end
+
+function myprivs.assertPlayer(playern,playerx,myprivs_level)
+        myprivs.tbv(myprivs.players, playern)
+        myprivs.tbv(myprivs.players[playern], "name", playern)
+        myprivs.tbv(myprivs.players[playern], "setby", playerx)
+        myprivs.tbv(myprivs.players[playern], "myprivs_level", myprivs_level)
+end
 
 local function setprivs(player,param)
 	local leveltitle=" restricted player" -- the lowest level
 	local levelnum=0
+	local pname = minetest.get_player_by_name(player)
+	local myprivs_level=myprivs.player(player)
 	
 	if param == "" then
 		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
@@ -44,6 +69,9 @@ local function setprivs(player,param)
 	if args[2]=="admin" then levelnum=25 end
 	if args[2]=="super" then levelnum=50 end
 
+	myprivs.assertPlayer(playername,pname,levelnum)
+	myprivs.save()
+	
 	if levelnum == 0 then
 		minetest.chat_send_player(player, "Usage: /userlevel <player> <prison|restrict|interact|helper|mod|admin|super>")
 		return false
@@ -111,194 +139,3 @@ minetest.register_chatcommand("userlevel", {
 	func = setprivs
 })
 
-minetest.register_chatcommand("super_admin", {
-	params = "",
-	description = "Super Administrator",
-	privs={myprivs_levels_super=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			privs.interact=true
-			privs.home=true
-			privs.give=true
-			privs.teleport=true
-			privs.tp_admin=true
-			privs.bring=true
-			privs.fast=true
-			privs.fly=true
-			privs.noclip=true
-			privs.privs=true
-			privs.basic_privs=true
-			privs.kick=true
-			privs.ban=true
-			privs.areas=true
-			privs.myprivs_levels=true
-			privs.tps_magicchests=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now a Super Admin")
-			minetest.chat_send_player(name, param .. " is now a Super Admin")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("admin", {
-	params = "",
-	description = "Administrator",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			privs.interact=true
-			privs.home=true
-			privs.teleport=true
-			privs.tp_admin=true
-			privs.bring=true
-			privs.fast=true
-			privs.fly=true
-			privs.noclip=true
-			privs.basic_privs=true
-			privs.kick=true
-			privs.ban=true
-			privs.areas=true
-			privs.myprivs_levels=true
-			privs.tps_magicchests=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now an Admin")
-			minetest.chat_send_player(name, param .. " is now an Admin")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("mod", {
-	params = "",
-	description = "Moderator",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			privs.interact=true
-			privs.home=true
-			privs.teleport=true
-			privs.tp_admin=true
-			privs.fast=true
-			privs.fly=true
-			privs.basic_privs=true
-			privs.kick=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now a Moderator")
-			minetest.chat_send_player(name, param .. " is now a Moderator")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("helper", {
-	params = "",
-	description = "Helper",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			privs.interact=true
-			privs.home=true
-			privs.fast=true
-			privs.fly=true
-			privs.kick=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now a Helper")
-			minetest.chat_send_player(name, param .. " is now a Helper")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("norm", {
-	params = "",
-	description = "Normal Player",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			privs.interact=true
-			privs.home=true
-			privs.fast=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now a Normal Player")
-			minetest.chat_send_player(name, param .. " is now a Normal Player")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("unpunish", {
-	params = "",
-	description = "Unpunish Player",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			privs.interact=true
-			privs.home=true
-			privs.fast=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now unpunished")
-			minetest.chat_send_player(name, param .. " is now unpunished")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("punish", { -- will teleport them to prison, set timer, then give them nointeract and place them in spawn
-	params = "",
-	description = "Punish Player",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.shout=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now being punished")
-			minetest.chat_send_player(name, param .. " is now punished")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("silence", {
-	params = "",
-	description = "Silence Player",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-		local privs=minetest.get_player_privs(param)
-			privs.interact=true
-			privs.home=true
-			privs.fast=true
-			minetest.set_player_privs(param,privs)
-			minetest.chat_send_player(param, "You are now silenced")
-			minetest.chat_send_player(name, param .. " is now silenced")
-			return true
-		end
-end})
-
-minetest.register_chatcommand("ghost", {
-	params = "",
-	description = "Remove all privs",
-	privs={myprivs_levels=true},
-	func = function(name, param)
-		if minetest.get_player_by_name(param) then
-		minetest.set_player_privs(param, {})
-			minetest.chat_send_player(param, "You are now a ghost")
-			minetest.chat_send_player(name, param .. " is now ghosted")
-			return true
-		end
-end})
