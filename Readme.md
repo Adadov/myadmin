@@ -5,8 +5,8 @@ Adds admin tools Player Join Rules, curseword detection, chat commands and more 
 
 
 #Contributors
-- (DonBatman)[https://github.com/DonBatman]
-- (RobbieF)[https://github.com/Cat5TV]
+- [DonBatman](https://github.com/DonBatman)
+- [RobbieF](https://github.com/Cat5TV)
  
 
 #Tools
