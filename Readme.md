@@ -29,7 +29,9 @@ This is a list of words that are banned on the server. These words can be editte
 
 The User Level (myprivs) mod is a set of configurable privs for different levels of players. You can set the level with a chat command.
 
-**Usage:** /userlevel <player> <level>
+**Usage:** /userlevel player level
+
+**Example Usage:** */userlevel DonBatman admin*
 
 **Required Privs:** *myprivs_levels*
 
