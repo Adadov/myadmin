@@ -49,9 +49,9 @@ The available level options are:
 - *prison* - Prisoner
 
 Required minetest.conf options:
-- *myprivs.prison=<x,y,z>* - Where to place prisoners. Should be an impenetrable fortress.
-- *myprivs.prisontime=<hours>* - How many real-life hours to send a player to prison for.
-- *myprivs.spawn=<x,y,z>* - When prisoners are released, this is where should they spawn.
+- *myprivs.prison=x,y,z* - Where to place prisoners. Should be an impenetrable fortress.
+- *myprivs.prisontime=5* - Where 5 is how many real-life hours to send a player to prison for. Can be 0.5 for a half hour.
+- *myprivs.spawn=x,y,z* - When prisoners are released, this is where should they spawn.
 
 
 #Spawn
