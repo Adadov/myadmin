@@ -10,7 +10,67 @@ minetest.register_chatcommand("myprivs_commands", {
 	end,
 })
 
+local function setprivs(param,level)
+	minetest.set_player_privs(param, {}) -- Reset all privileges to nothing
+	if level == 0 then return end
+	-- These are the base levels and should be left as is to establish the priv hierarchy
+	-- In order to remove a priv from a level, do so within the chatcommand() after the call to setpriv()
+	-- I'm counting in 5's so we can easily add other levels in between
+	if level >= 5 then
+		-- Restricted
+		privs.shout=true
+		privs.nointeract=true
+		
+		-- Normal
+		if level >= 10 then
+			privs.nointeract=false
+			privs.interact=true
+			privs.home=true
+			privs.fast=true
+		end
+		
+		-- Helper
+		if level >= 15 then
+			privs.fly=true
+			privs.noclip=true
+		end
+		
+		-- Moderator
+		if level >= 20 then
+			privs.myprivs_levels=true
+			privs.teleport=true
+			privs.tp_admin=true
+			privs.basic_privs=true
+			privs.kick=true
+		end
+		
+		-- Admin
+		if level >= 25 then
+			privs.bring=true
+			privs.ban=true
+			privs.areas=true
+		end
+		
+		-- Super Admin
+		if level >= 50 then
+			privs.give=true
+			privs.privs=true
+			privs.tps_magicchests=true
+		end
+		
+		minetest.set_player_privs(param,privs)
+	end
+end
+
+minetest.register_chatcommand("userlevel", {
+	description = "Moderator/Administrator tool to control the privileges of players.",
+	params = "<player> <prison|restrict|interact|helper|mod|admin|super>",
+	privs = {myprivs_levels=true},
+	func = setprivs
+})
+
 minetest.register_chatcommand("super_admin", {
+	local level=50
 	params = "",
 	description = "Super Administrator",
 	privs={myprivs_levels_super=true},
@@ -43,6 +103,7 @@ minetest.register_chatcommand("super_admin", {
 end})
 
 minetest.register_chatcommand("admin", {
+	local level=25
 	params = "",
 	description = "Administrator",
 	privs={myprivs_levels=true},
@@ -73,6 +134,7 @@ minetest.register_chatcommand("admin", {
 end})
 
 minetest.register_chatcommand("mod", {
+	local level=20
 	params = "",
 	description = "Moderator",
 	privs={myprivs_levels=true},
@@ -97,6 +159,7 @@ minetest.register_chatcommand("mod", {
 end})
 
 minetest.register_chatcommand("helper", {
+	local level=15
 	params = "",
 	description = "Helper",
 	privs={myprivs_levels=true},
@@ -118,6 +181,7 @@ minetest.register_chatcommand("helper", {
 end})
 
 minetest.register_chatcommand("norm", {
+	local level=10
 	params = "",
 	description = "Normal Player",
 	privs={myprivs_levels=true},
@@ -137,6 +201,7 @@ minetest.register_chatcommand("norm", {
 end})
 
 minetest.register_chatcommand("unpunish", {
+	local level=5
 	params = "",
 	description = "Unpunish Player",
 	privs={myprivs_levels=true},
@@ -155,7 +220,7 @@ minetest.register_chatcommand("unpunish", {
 		end
 end})
 
-minetest.register_chatcommand("punish", {
+minetest.register_chatcommand("punish", { -- will teleport them to prison, set timer, then give them nointeract and place them in spawn
 	params = "",
 	description = "Punish Player",
 	privs={myprivs_levels=true},
