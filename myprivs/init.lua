@@ -65,13 +65,13 @@ local function setprivs(player,param)
 		local prison=minetest.setting_get_pos("myprivs.prison")
 		local prisonminutes=minetest.setting_get("myprivs.prisonminutes")
 		local spawn=minetest.setting_get_pos("myprivs.spawn")
-		minetest.chat_send_player(targetplayer, "You have been sent to prison. Your punishment will last " .. prisonminutes .. " minutes at which time you will be given the chance to re-enter society.")
+		--minetest.chat_send_player(targetplayer, "You have been sent to prison. Your punishment will last " .. prisonminutes .. " minutes at which time you will be given the chance to re-enter society.")
 		targetplayer:setpos(prison)
 		-- Play a police siren or slamming prison cage sound effect.
 		minetest.after(prisonminutes*60,
 			function() 
 				args[2]="restricted"
-				minetest.chat_send_player(targetplayer, "You are now allowed back into society. Do not fail us. Follow the rules.")
+			--	minetest.chat_send_player(targetplayer, "You are now allowed back into society. Do not fail us. Follow the rules.")
 				targetplayer:setpos(spawn)
 			end
 		)
