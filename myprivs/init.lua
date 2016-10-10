@@ -117,16 +117,17 @@ local function setprivs(player,param)
 		
 		-- Moderator
 		if levelnum >= 20 then
-			privs.myprivs_levels=true
 			privs.teleport=true
 			privs.tp_admin=true
 			privs.basic_privs=true
 			privs.kick=true
+			privs.spill=true
 			leveltitle=" moderator"
 		end
 		
 		-- Admin
 		if levelnum >= 25 then
+			privs.myprivs_levels=true
 			privs.bring=true
 			privs.ban=true
 			privs.areas=true
