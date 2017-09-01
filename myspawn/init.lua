@@ -1,8 +1,10 @@
 -- If not using then set the name to nil
 
+local default_respawn = {x=-2412.8, y=9.5, z=-1540.3}
+
 -- Spawn 1
-local s1n = "spawn1"
-local s1 = {x = 0, y = 0, z = 0}
+local s1n = "spawn"
+local s1 = default_respawn
 
 -- Spawn 2
 local s2n = "spawn2"
@@ -19,6 +21,11 @@ local s4 = {x = 0, y = 0, z = 0}
 -- Spawn 5
 local s5n = nil
 local s5 = {x = 0, y = 0, z = 0}
+
+minetest.register_on_respawnplayer(function(player)
+    player:setpos(default_respawn)
+    return true
+end)
 
 -- Nothing to change past here
 minetest.register_on_chat_message(function(name, message, playername, player)
