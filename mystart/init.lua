@@ -30,11 +30,11 @@ minetest.register_on_joinplayer(function(player)
 		if fields["yes"] then
 
 		local privs=minetest.get_player_privs(pname)
-		
+
 			privs.shout=true
 			privs.interact=true
 			privs.home=true
-			privs.fast=true
+			privs.fast=false
 			minetest.set_player_privs(pname,privs)
 
 			return true
