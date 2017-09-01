@@ -8,7 +8,7 @@ local s1 = default_respawn
 
 -- Spawn 2
 local s2n = "spawn2"
-local s2 = {x = 0, y = 0, z = 0}
+local s2 = {x=-2412.8, y=9.5, z=-1540.3}
 
 --Spawn 3
 local s3n = "spawn3"
@@ -22,12 +22,35 @@ local s4 = {x = 0, y = 0, z = 0}
 local s5n = nil
 local s5 = {x = 0, y = 0, z = 0}
 
+-- Nothing to change past here
 minetest.register_on_respawnplayer(function(player)
     player:setpos(default_respawn)
     return true
 end)
 
--- Nothing to change past here
+myspawn.go = function(name, pos)
+	if name ~= nil then
+		if pos ~= nil then
+			local player = minetest.get_player_by_name(name)
+			player:setpos(pos)
+			return true
+		end
+	end
+	return false
+end
+
+minetest.register_chatcommand("respawn", {
+	description = "Teleport to spawn point",
+	func = function(name) {
+			if myspawn.go(name, default_respawn) then
+				return true
+			end
+		end
+		return false, "Spawn point error"
+	end
+})
+
+--[[
 minetest.register_on_chat_message(function(name, message, playername, player)
 	if s1n ~= nil then
 		local cmd = "/"..s1n
@@ -91,3 +114,4 @@ minetest.register_on_chat_message(function(name, message, playername, player)
 
 
 end)
+]]--
