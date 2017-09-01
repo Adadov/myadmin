@@ -1,6 +1,6 @@
 -- If not using then set the name to nil
 
-local default_respawn = {x=-2412.8, y=9.5, z=-1540.3}
+local default_respawn = {x=-2413, y=10, z=-1540}
 
 -- Spawn 1
 local s1n = "spawn"
@@ -8,7 +8,7 @@ local s1 = default_respawn
 
 -- Spawn 2
 local s2n = "spawn2"
-local s2 = {x=-2412.8, y=9.5, z=-1540.3}
+local s2 = {x=-2412, y=12, z=-1540}
 
 --Spawn 3
 local s3n = "spawn3"
@@ -28,6 +28,8 @@ minetest.register_on_respawnplayer(function(player)
     return true
 end)
 
+myspawn = {}
+
 myspawn.go = function(name, pos)
 	if name ~= nil then
 		if pos ~= nil then
@@ -41,13 +43,12 @@ end
 
 minetest.register_chatcommand("respawn", {
 	description = "Teleport to spawn point",
-	func = function(name) {
-			if myspawn.go(name, default_respawn) then
-				return true
-			end
+	func = function(name)
+		if myspawn.go(name, default_respawn) then
+			return true
 		end
 		return false, "Spawn point error"
-	end
+	end,
 })
 
 --[[
