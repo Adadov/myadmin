@@ -51,6 +51,18 @@ minetest.register_chatcommand("respawn", {
 	end,
 })
 
+local spawnpoint = minetest.setting_get_pos("respawn_point")
+
+minetest.register_chatcommand("spawntest", {
+	description = "Teleport to spawn point",
+	func = function(name)
+		if myspawn.go(name, spawnpoint) then
+			return true
+		end
+		return false, "Spawn point error"
+	end,
+})
+
 --[[
 minetest.register_on_chat_message(function(name, message, playername, player)
 	if s1n ~= nil then
