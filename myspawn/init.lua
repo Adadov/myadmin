@@ -1,6 +1,6 @@
 -- If not using then set the name to nil
 
-local default_respawn = {x=-2413, y=10, z=-1540}
+local default_respawn = {x=-2293, y=11.5, z=-1515}
 
 -- Spawn 1
 local s1n = "spawn"
