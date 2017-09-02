@@ -51,15 +51,23 @@ minetest.register_chatcommand("respawn", {
 	end,
 })
 
-local spawnpoint = minetest.setting_get_pos("respawn_point")
-
 minetest.register_chatcommand("spawntest", {
 	description = "Teleport to spawn point",
 	func = function(name)
 		if myspawn.go(name, spawnpoint) then
 			return true
 		end
-		return false, "Spawn point error"
+		return false, "Spawn point error "
+	end,
+})
+
+minetest.register_chatcommand("setspawn", {
+	description = "Set spawn point",
+	privs = "server",
+	func = function(name, txt)
+		local player = minetest.get_player_by_name(name)
+		minetest.chat_send_player(name, txt)
+		return false, "Spawn point error "
 	end,
 })
 
