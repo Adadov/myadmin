@@ -6,8 +6,8 @@ minetest.register_privilege("setpoint", "Lets person set predefined points")
 myspawn = {}
 myspawn.storage = minetest.get_mod_storage()
 
-if minetest.setting_get('static_spawnpoint') == nil then
-	minetest.setting_set('static_spawnpoint', txt)
+if minetest.setting_get('static_spawnpoint') == nil and myspawn.get("spawn") ~= false then
+	minetest.setting_set('static_spawnpoint', myspawn.get("spawn"))
 	minetest.setting_save()
 	minetest.log("[SPAWN] static_spawnpoint set !")
 end
