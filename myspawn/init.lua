@@ -146,7 +146,7 @@ minetest.register_chatcommand("setpoint", {
 
 
 if minetest.setting_get('static_spawnpoint') == nil and myspawn.get("spawn") ~= false then
-	minetest.setting_set('static_spawnpoint', myspawn.get("spawn"))
+	minetest.setting_set('static_spawnpoint', minetest.pos_to_string(myspawn.get("spawn")))
 	minetest.setting_save()
 	minetest.log("[SPAWN] static_spawnpoint set !")
 end
