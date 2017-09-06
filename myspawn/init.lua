@@ -5,23 +5,7 @@ minetest.register_privilege("setpoint", "Lets person set predefined points")
 
 myspawn = {}
 myspawn.storage = minetest.get_mod_storage()
-minetest.log("[MySpawn] "..dump(myspawn.storage:to_table().fields))
 
--- Spawn 2
-local s2n = "spawn2"
-local s2 = {x=-2412, y=12, z=-1540}
-
---Spawn 3
-local s3n = "spawn3"
-local s3 = {x = 0, y = 0, z = 0}
-
--- Spawn 4
-local s4n = nil
-local s4 = {x = 0, y = 0, z = 0}
-
--- Spawn 5
-local s5n = nil
-local s5 = {x = 0, y = 0, z = 0}
 
 -- Nothing to change past here
 -- Respawn function
@@ -29,6 +13,7 @@ minetest.register_on_respawnplayer(function(player)
     myspawn.go(player:get_player_name(), myspawn.get("spawn"))
     return true
 end)
+
 
 -- Teleport name to pos
 myspawn.go = function(name, pos)
@@ -71,7 +56,7 @@ minetest.register_chatcommand("respawn", {
 
 minetest.register_chatcommand("setspawn", {
 	description = "Set spawn point",
-	privs = "setspawn",
+	privs = {setspawn=true},
 	func = function(name, txt)
 		local player = minetest.get_player_by_name(name)
 		local pos
@@ -85,13 +70,15 @@ minetest.register_chatcommand("setspawn", {
 		end
 		minetest.chat_send_player(name, "Position of spawn defined to "..txt)
 		myspawn.set("spawn", pos)
+		minetest.setting_set('static_spawnpoint', txt)
+		minetest.setting_save()
 		return true
 	end,
 })
 
 minetest.register_chatcommand("getpoint", {
 	description = "Get registered point",
-	privs = "setpoint",
+	privs = {setpoint=true},
 	func = function(name, txt)
 		local point = myspawn.get(txt)
 		minetest.chat_send_player(name, "Position "..txt.." defined to "..minetest.pos_to_string(point))
@@ -101,20 +88,20 @@ minetest.register_chatcommand("getpoint", {
 
 minetest.register_chatcommand("points", {
 	description = "Get all registered points",
-	privs = "setpoint",
+	privs = {setpoint=true},
 	func = function(name, txt)
 		local msg = ""
 		for point, value in pairs(myspawn.storage:to_table().fields) do
 			msg = msg.."\n"..point..": "..value
 		end
-			minetest.chat_send_player(name, "Configured points: \n"..msg)
+		minetest.chat_send_player(name, "Configured points: \n"..msg)
 		return true
 	end,
 })
 
 minetest.register_chatcommand("go", {
 	description = "Teleport to custom point",
-	privs = "server",
+	privs = {server=true},
 	func = function(name, txt)
 		local spawnpoint = myspawn.get(txt)
 		if myspawn.go(name, spawnpoint) then
@@ -127,11 +114,16 @@ minetest.register_chatcommand("go", {
 
 minetest.register_chatcommand("setpoint", {
 	description = "Set teleport point",
-	privs = "setpoint",
+	privs = {setpoint=true},
 	func = function(name, txt)
-		minetest.chat_send_player(name, "Debug:"..txt)
+		--minetest.chat_send_player(name, "Debug:"..txt)
 		local player = minetest.get_player_by_name(name)
-		for point, value in txt:gmatch("([%w_-]+)%s(%S+ %S+ %S+)") do
+
+		for point, value in txt:gmatch("([%w_-]+)%s(%S+[%s,]+%S+[%s,]+%S+)") do
+			minetest.log("[myspawn] Defining point "..point.." value to ".. value)
+			if point == "spawn" then
+				return false, "Not allowed to set spawn point with this command"
+			end
 			local pos = minetest.string_to_pos(value)
 			minetest.chat_send_player(name, "Position of "..point.." defined to "..value)
 			myspawn.set(point, pos)
@@ -140,11 +132,16 @@ minetest.register_chatcommand("setpoint", {
 		for point in txt:gmatch("([%w_-]+)") do
 			local pos = player:getpos()
 			local value = minetest.pos_to_string(pos)
+			minetest.log("[myspawn] Defining point "..point.." value to ".. value)
+			if point == "spawn" then
+				return false, "Not allowed to set spawn point with this command"
+			end
 			minetest.chat_send_player(name, "Position of "..point.." defined to "..value)
 			myspawn.set(point, pos)
 			return true
 		end
-		return false, "Test"
+
+		return false, "Unable to set point"
 	end
 })
 
@@ -162,55 +159,5 @@ minetest.register_on_chat_message(function(name, message, playername, player)
 			end
 		end
 	end
-
-	if s2n ~= nil then
-		local cmd = "/"..s2n
-		if message:sub(0, #cmd) == cmd then
-			if message == '/'..s2n then
-				local player = minetest.get_player_by_name(name)
-				minetest.chat_send_player(player:get_player_name(), "Teleporting to "..s2n)
-				player:setpos(s2)
-				return true
-			end
-		end
-	end
-
-	if s3n ~= nil then
-		local cmd = "/"..s3n
-		if message:sub(0, #cmd) == cmd then
-			if message == '/'..s3n then
-				local player = minetest.get_player_by_name(name)
-				minetest.chat_send_player(player:get_player_name(), "Teleporting to "..s3n)
-				player:setpos(s3)
-				return true
-			end
-		end
-	end
-
-	if s4n ~= nil then
-		local cmd = "/"..s4n
-		if message:sub(0, #cmd) == cmd then
-			if message == '/'..s4n then
-				local player = minetest.get_player_by_name(name)
-				minetest.chat_send_player(player:get_player_name(), "Teleporting to "..s4n)
-				player:setpos(s4)
-				return true
-			end
-		end
-	end
-
-	if s5n ~= nil then
-		local cmd = "/"..s5n
-		if message:sub(0, #cmd) == cmd then
-			if message == '/'..s5n then
-				local player = minetest.get_player_by_name(name)
-				minetest.chat_send_player(player:get_player_name(), "Teleporting to "..s5n)
-				player:setpos(s5)
-				return true
-			end
-		end
-	end
-
-
 end)
 ]]--
