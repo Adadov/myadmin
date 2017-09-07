@@ -39,12 +39,15 @@ minetest.register_on_newplayer(function(player)
 
 		elseif fields["no"] then
 
+			minetest.set_player_privs(pname,{})
 			minetest.kick_player(pname, "You need to agree to the rules to play!")
+			minetest.after(0.5, function(name)
+				print("[SERVER] "..name.." removed !! Rules refused")
+				minetest.remove_player(name)
+			end, pname)
 
 		end
 
 	end)
 
 end)
-
-
