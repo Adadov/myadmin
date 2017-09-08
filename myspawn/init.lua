@@ -100,7 +100,7 @@ minetest.register_chatcommand("points", {
 
 minetest.register_chatcommand("go", {
 	description = "Teleport to custom point",
-	privs = {server=true},
+	privs = {teleport=true},
 	func = function(name, txt)
 		local spawnpoint = myspawn.get(txt)
 		if myspawn.go(name, spawnpoint) then
